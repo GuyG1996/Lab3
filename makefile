@@ -1,20 +1,17 @@
-CFLAGS = -m32 -Wall -ansi -c -nostdlib -fno-stack-protector
+CFLAGS = -m32 -Wall -ansi -c -nostdlib -fno-stack-protector -g
 LDFLAGS = -m elf_i386
-EXECUTABLE = task1A
+EXECUTABLE = start
 
 all: $(EXECUTABLE)
 
-$(EXECUTABLE): start.o util.o main.o
-	ld $(LDFLAGS) start.o main.o util.o -o $(EXECUTABLE)
+$(EXECUTABLE): start.o util.o 
+	ld $(LDFLAGS) -g start.o util.o -o $(EXECUTABLE)
 
 start.o: start.s
-	nasm -f elf32 start.s -o start.o
+	nasm -f elf32 -g start.s -o start.o
 
-util.o: util.c util.h
+util.o: util.h util.c 
 	gcc $(CFLAGS) util.c -o util.o
-
-main.o: main.c util.h
-	gcc $(CFLAGS) main.c -o main.o
 
 clean:
 	rm -f $(EXECUTABLE) *.o
